@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.17)
+project(simple-equation-solver)
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(${PROJECT_NAME})
+
+# replaced executable file to root dir
+set_target_properties(${PROJECT_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        )
+
+#add sources
+include_directories(includes)
+add_subdirectory(srcs)
