@@ -13,7 +13,7 @@
 "x"                 {return SES_X;}
 "^"                 {return SES_DEGREE;}
 [0-9]+"."[0-9]+     {yylval.Number = std::stod(yytext); return SES_NUMBER;}
-[0-9]+              {yylval.Number = std::stod(yytext); return SES_INTEGER_NUMBER;}
+[0-9]+              {yylval.IntNumber = std::stoi(yytext); return SES_INTEGER_NUMBER;}
 "*"                 {return SES_MULT;}
 "/"                 {return SES_DIV;}
 "+"                 {return SES_PLUS;}

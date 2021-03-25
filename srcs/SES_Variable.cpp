@@ -2,13 +2,20 @@
 
 SES_Variable::SES_Variable(double coefficient, int degree) : _coefficient(coefficient), _degree(degree) {
 	if (!isCorrect())
-		throw std::runtime_error("var is incorrect"); //TODO make custom exceptions
+		throw std::runtime_error("degree is incorrect"); //TODO make custom exceptions
 }
 
 SES_Variable SES_Variable::operator*(const SES_Variable& var) const {
 	SES_Variable newVar(_coefficient * var._coefficient, _degree + var._degree);
 	if (!newVar.isCorrect())
-		throw std::runtime_error("var is incorrect"); //TODO make custom exceptions
+		throw std::runtime_error("degree is incorrect"); //TODO make custom exceptions
+	return newVar;
+}
+
+SES_Variable SES_Variable::operator/(const SES_Variable& var) const {
+	SES_Variable newVar(_coefficient / var._coefficient, _degree - var._degree);
+	if (!newVar.isCorrect())
+		throw std::runtime_error("degree is incorrect"); //TODO make custom exceptions
 	return newVar;
 }
 
@@ -27,6 +34,9 @@ int SES_Variable::GetDegree() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const SES_Variable& var) {
-	os << var.GetCoefficient() << " * X^" << var.GetDegree();
+	if (var.GetCoefficient() < 0)
+		os << "- " << var.GetCoefficient() * -1 << " * X^" << var.GetDegree();
+	else
+		os << "+ " << var.GetCoefficient() << " * X^" << var.GetDegree();
 	return os;
 }

@@ -39,8 +39,8 @@ void yyerror(std::shared_ptr<SES_SolverData> SES_SolverData, const char *msg)
 
 
 %type<Var>          EXPRESSION
-%type<Var>          LEFT_EXPRESSIONS
-%type<Var>          RIGHT_EXPRESSIONS
+%type<Var>          EXPRESSION_PLUS
+%type<Var>          EXPRESSION_MINUS
 
 %left               SES_PLUS SES_MINUS
 %left               SES_MULT SES_DIV
@@ -57,53 +57,78 @@ SEPARATORS:
 
 EQUATION:
                     LEFT_EXPRESSIONS SES_EQUALLY RIGHT_EXPRESSIONS
-                    {
-                      //here we have 2 expressions lists to be simplified
-                    }
 
 LEFT_EXPRESSIONS:
+                    ADD_FIRST_EXPR ADD_OTHER_EXPRS
+                    | ADD_FIRST_EXPR
+
+RIGHT_EXPRESSIONS:
+                    SUB_FIRST_EXPR SUB_OTHER_EXPRS
+                    | SUB_FIRST_EXPR
+
+ADD_FIRST_EXPR:
                     EXPRESSION
                     {
-                        std::cout << $1 << std::endl;
-                        $$ = $1;
+                        solverData->AddExpression($1);
                     }
-                    | EXPRESSION SES_PLUS LEFT_EXPRESSIONS
+
+SUB_FIRST_EXPR:
+                    EXPRESSION
                     {
-                        std::cout << "AA" << std::endl;
-                        std::cout << $1 << " | " << $3 << std::endl;
-                        solverData->AddToExpression($1);
-                        solverData->AddToExpression($3);
+                        solverData->AddExpression($1 * SES_Variable(-1, 0));
                     }
-                    | EXPRESSION SES_MINUS LEFT_EXPRESSIONS
+
+ADD_OTHER_EXPRS:
+                    ADD_OTHER_EXPRS EXPRESSION_MINUS
                     {
-                        std::cout << "BB" << std::endl;
-                        std::cout << $1 << " | " << std::endl;
-//                        $3 = $3 * SES_Variable(-1, 1);
-                        solverData->AddToExpression($1);
-//                        solverData->AddToExpression($3);
+                        solverData->AddExpression($2);
+                    }
+                    | EXPRESSION_MINUS
+                    {
+                        solverData->AddExpression($1);
+                    }
+                    | ADD_OTHER_EXPRS EXPRESSION_PLUS
+                    {
+                        solverData->AddExpression($2);
+                    }
+                    | EXPRESSION_PLUS
+                    {
+                        solverData->AddExpression($1);
+                    }
+
+SUB_OTHER_EXPRS:
+                    SUB_OTHER_EXPRS EXPRESSION_MINUS
+                    {
+                        solverData->AddExpression($2 * SES_Variable(-1, 0));
+                    }
+                    | EXPRESSION_MINUS
+                    {
+                        solverData->AddExpression($1 * SES_Variable(-1, 0));
+                    }
+                    | SUB_OTHER_EXPRS EXPRESSION_PLUS
+                    {
+                        solverData->AddExpression($2 * SES_Variable(-1, 0));
+                    }
+                    | EXPRESSION_PLUS
+                    {
+                        solverData->AddExpression($1 * SES_Variable(-1, 0));
                     }
 
 EXPRESSION_MINUS:
                     SES_MINUS EXPRESSION
                     {
-                        std::cout << "gug" << std::endl;
+                        $$ = $2 * SES_Variable(-1, 0);
                     }
 
-RIGHT_EXPRESSIONS:
-                    RIGHT_EXPRESSIONS SES_PLUS
+EXPRESSION_PLUS:
+                    SES_PLUS EXPRESSION
                     {
-                        std::cout << "R: AA" << std::endl;
-                    }
-                    | EXPRESSION
-                    {
-                        std::cout << "R: BB" << std::endl;
+                        $$ = $2;
                     }
 
 EXPRESSION:
                     SES_X SES_DEGREE SES_INTEGER_NUMBER
                     {
-                        if ($3 < 0 || $3 > 2)
-                            throw std::runtime_error("degree should be >= 0 and <= 2");
                         $$ = SES_Variable(1, $3);
                     }
                     | SES_X
@@ -124,8 +149,7 @@ EXPRESSION:
                     }
                     | EXPRESSION SES_DIV EXPRESSION
                     {
-                        std::cout << "AAA" << std::endl;
+                        $$ = $1 / $3;
                     }
-
 
 %%

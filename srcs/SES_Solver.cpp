@@ -14,7 +14,3 @@ std::shared_ptr<SES_SolverData> SES_Solver::Parse(char *str) {
 	std::cout << *equationSolverData << std::endl;
 	return equationSolverData;
 }
-
-void SES_Solver::Simplify(std::shared_ptr<SES_SolverData> equationSolverData) {
-	(void)equationSolverData;
-}

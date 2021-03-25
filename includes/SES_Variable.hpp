@@ -7,6 +7,7 @@ public:
 	SES_Variable(double coefficient, int degree);
 
 	SES_Variable operator*(const SES_Variable& var) const;
+	SES_Variable operator/(const SES_Variable& var) const;
 	double GetCoefficient() const;
 	int GetDegree() const;
 
