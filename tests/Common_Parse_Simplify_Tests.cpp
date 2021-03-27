@@ -60,7 +60,7 @@ TEST_F(Common_Parse_Simplify_Tests, Not_Correct_Input) {
 	char equation[100] = "x^11 * X^10 = 2";
 	try {
 		solverData = SES_Solver::Parse(equation);
-		solverData->CheckCorrect();
+		solverData->IsDegreeCorrect();
 		ASSERT_TRUE(false);
 	}
 	catch (const std::exception& exception) {
@@ -71,7 +71,7 @@ TEST_F(Common_Parse_Simplify_Tests, Not_Correct_Input) {
 	strcpy(equation, "x^10 / X^11 = 2");
 	try {
 		solverData = SES_Solver::Parse(equation);
-		solverData->CheckCorrect();
+		solverData->IsDegreeCorrect();
 		ASSERT_TRUE(false);
 	}
 	catch (const std::exception& exception) {
@@ -82,7 +82,7 @@ TEST_F(Common_Parse_Simplify_Tests, Not_Correct_Input) {
 	strcpy(equation, "x^-1 * x^3 *x = 2");
 	try {
 		solverData = SES_Solver::Parse(equation);
-		solverData->CheckCorrect();
+		solverData->IsDegreeCorrect();
 		ASSERT_TRUE(false);
 	}
 	catch (const std::exception& exception) {

@@ -20,7 +20,7 @@ int SES_Variable::GetDegree() const {
 	return _degree;
 }
 
-bool SES_Variable::IsCorrect() const {
+bool SES_Variable::IsDegreeCorrect() const {
 	if (_degree >= 0 && _degree <= 2)
 		return true;
 	return false;

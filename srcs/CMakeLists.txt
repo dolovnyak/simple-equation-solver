@@ -3,6 +3,7 @@ target_sources(${PROJECT_NAME} PUBLIC
         SES_Solver.cpp
         SES_SolverData.cpp
         SES_Variable.cpp
+        SES_Solution.cpp
         utilities.cpp
         )
 
@@ -10,6 +11,7 @@ target_sources(GTests PUBLIC
         SES_Solver.cpp
         SES_SolverData.cpp
         SES_Variable.cpp
+        SES_Solution.cpp
         utilities.cpp
         )
 

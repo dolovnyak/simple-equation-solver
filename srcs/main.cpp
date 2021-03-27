@@ -10,19 +10,24 @@ bool isInputCorrect(int argc)
 int main(int argc, char **argv)
 {
 	if (!isInputCorrect(argc)) {
-		std::cout << "only one string expected in argument" << std::endl;
+		std::cout << "Only one string expected in argument." << std::endl;
 		exit(0);
 	}
 
 	try {
 		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(argv[1]);
-		solverData->CheckCorrect();
-		std::cout << *solverData << std::endl;
+		std::cout << "Reduced form: " << *solverData << std::endl;
+		std::cout << "Polynomial degree: " << solverData->GetMaxDegree() << std::endl;
 
-//		SES_Solver::Solve
+		if (!solverData->IsDegreeCorrect()) {
+			std::cout << "The polynomial degree should be strictly >= 0 and <= 2, it will not be solved." << std::endl;
+			exit(0);
+		}
+		SES_Solution solution = SES_Solver::Solve(solverData);
+		std::cout << solution;
 	}
 	catch (const std::exception &exception) {
-		std::cout << "Exception: " << exception.what() << std::endl;
+		std::cout << exception.what() << std::endl;
 	}
 
 	exit(0);

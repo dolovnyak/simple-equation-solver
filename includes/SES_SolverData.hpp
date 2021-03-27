@@ -9,22 +9,14 @@ public:
 	void SubExpression(SES_Variable var);
 
 	[[nodiscard]] std::vector<SES_Variable> GetVariables() const;
+	[[nodiscard]] int GetMaxDegree() const;
 	[[nodiscard]] std::string ToString() const;
-	void CheckCorrect() const;
+	[[nodiscard]] bool IsDegreeCorrect() const;
 
 private:
 	std::vector<SES_Variable> _variables;
 
 	std::vector<SES_Variable>::iterator GetVarByDegree(int degree);
-
-	class NotCorrectDegreeException : public std::exception {
-	public:
-		explicit NotCorrectDegreeException(const std::string& stringVar);
-		[[nodiscard]] const char *what() const _NOEXCEPT override;
-
-	private:
-		std::string exception_;
-	};
 };
 
 std::ostream &operator<<(std::ostream &os, const SES_SolverData& solverData);

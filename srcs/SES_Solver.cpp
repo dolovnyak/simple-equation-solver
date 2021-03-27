@@ -13,3 +13,16 @@ std::shared_ptr<SES_SolverData> SES_Solver::Parse(char *str) {
 
 	return equationSolverData;
 }
+
+SES_Solution SES_Solver::Solve(const std::shared_ptr<SES_SolverData>& solverData) {
+	SES_Solution solution;
+
+	if (solverData->GetMaxDegree() == 0) {
+		solution.AddSolutionString("Each real number.");
+	}
+	else {
+		;
+	}
+
+	return solution;
+}

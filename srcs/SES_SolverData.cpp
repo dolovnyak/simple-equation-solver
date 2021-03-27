@@ -29,19 +29,12 @@ std::vector<SES_Variable> SES_SolverData::GetVariables() const {
 	return _variables;
 }
 
-void SES_SolverData::CheckCorrect() const {
+bool SES_SolverData::IsDegreeCorrect() const {
 	for (SES_Variable var : _variables) {
-		if (!var.IsCorrect())
-			throw NotCorrectDegreeException(var.ToString());
+		if (!var.IsDegreeCorrect())
+			return false;
 	}
-}
-
-const char* SES_SolverData::NotCorrectDegreeException::what() const noexcept {
-	return exception_.c_str();
-}
-
-SES_SolverData::NotCorrectDegreeException::NotCorrectDegreeException(const std::string& stringVar) {
-	exception_ = "Degree is incorrect in expression: \"" + stringVar + "\"";
+	return true;
 }
 
 std::string SES_SolverData::ToString() const {
@@ -58,6 +51,20 @@ std::string SES_SolverData::ToString() const {
 		oss << " = 0";
 	}
 	return oss.str();
+}
+
+int SES_SolverData::GetMaxDegree() const {
+	int maxDegree = INT_MIN;
+
+	if (_variables.empty())
+		maxDegree = 0;
+
+	for (SES_Variable var : _variables) {
+		if (var.GetDegree() > maxDegree)
+			maxDegree = var.GetDegree();
+	}
+
+	return maxDegree;
 }
 
 std::ostream& operator<<(std::ostream &os, const SES_SolverData& solverData) {

@@ -12,7 +12,7 @@ public:
 	[[nodiscard]] double GetCoefficient() const;
 	[[nodiscard]] int GetDegree() const;
 	[[nodiscard]] std::string ToString() const;
-	[[nodiscard]] bool IsCorrect() const;
+	[[nodiscard]] bool IsDegreeCorrect() const;
 
 private:
 	double _coefficient;
