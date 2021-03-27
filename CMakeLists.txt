@@ -12,6 +12,12 @@ set_target_properties(${PROJECT_NAME}
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
         )
 
+#tests
+add_executable(GTests)
+add_subdirectory(libs/googletest)
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+add_subdirectory(tests)
+
 #add sources
 include_directories(includes)
 add_subdirectory(srcs)

@@ -10,13 +10,14 @@ bool isInputCorrect(int argc)
 int main(int argc, char **argv)
 {
 	if (!isInputCorrect(argc)) {
-		//TODO print something
+		std::cout << "only one string expected in argument" << std::endl;
 		exit(0);
 	}
 
 	try {
-		std::shared_ptr<SES_SolverData> equationSolverData = SES_Solver::Parse(argv[1]);
-		std::cout << equationSolverData << std::endl; //TODO SES_SolverData std::cout overload needed
+		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(argv[1]);
+		std::cout << solverData << std::endl;
+
 //		SES_Solver::Solve
 	}
 	catch (const std::exception &exception) {

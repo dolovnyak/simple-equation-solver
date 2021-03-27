@@ -5,10 +5,11 @@
 extern int yychar;
 extern int yylex();
 
-void yyerror(std::shared_ptr<SES_SolverData> SES_SolverData, const char *msg)
+void yyerror(std::shared_ptr<SES_SolverData> solverData, const char *msg)
 {
-    (void)SES_SolverData;
-    throw std::runtime_error("YACC EXCEPTION: " + std::string(msg) + ", lookahead token number " + std::to_string(yychar));
+    throw std::runtime_error("YACC EXCEPTION: " + std::string(msg) +
+        ", lookahead token number " + std::to_string(yychar) +
+        ", current parse state: \"" + solverData->ToString() + "\"");
 }
 
 %}
@@ -39,8 +40,8 @@ void yyerror(std::shared_ptr<SES_SolverData> SES_SolverData, const char *msg)
 
 
 %type<Var>          EXPRESSION
-%type<Var>          EXPRESSION_PLUS
-%type<Var>          EXPRESSION_MINUS
+%type<Var>          SIGNED_EXPRESSION
+%type<IntNumber>    SIGN
 
 %left               SES_PLUS SES_MINUS
 %left               SES_MULT SES_DIV
@@ -56,100 +57,31 @@ SEPARATORS:
                     | SES_SEPARATOR SEPARATORS
 
 EQUATION:
-                    LEFT_EXPRESSIONS SES_EQUALLY RIGHT_EXPRESSIONS
+                    EXPRESSIONS_TO_BE_ADDED SES_EQUALLY EXPRESSIONS_TO_BE_SUB
 
-LEFT_EXPRESSIONS:
-                    ADD_FIRST_EXPR ADD_OTHER_EXPRS
-                    | ADD_FIRST_EXPR
+EXPRESSIONS_TO_BE_ADDED:
+                    EXPRESSIONS_TO_BE_ADDED SIGNED_EXPRESSION           { solverData->AddExpression($2); }
+                    | SIGNED_EXPRESSION                                 { solverData->AddExpression($1); }
 
-RIGHT_EXPRESSIONS:
-                    SUB_FIRST_EXPR SUB_OTHER_EXPRS
-                    | SUB_FIRST_EXPR
+EXPRESSIONS_TO_BE_SUB:
+                    EXPRESSIONS_TO_BE_SUB SIGNED_EXPRESSION             { solverData->SubExpression($2); }
+                    | SIGNED_EXPRESSION                                 { solverData->SubExpression($1); }
 
-ADD_FIRST_EXPR:
-                    EXPRESSION
-                    {
-                        solverData->AddExpression($1);
-                    }
+SIGNED_EXPRESSION:
+                    SIGN EXPRESSION                                     { $$ = SES_Variable($1, 0) * $2; }
 
-SUB_FIRST_EXPR:
-                    EXPRESSION
-                    {
-                        solverData->AddExpression($1 * SES_Variable(-1, 0));
-                    }
-
-ADD_OTHER_EXPRS:
-                    ADD_OTHER_EXPRS EXPRESSION_MINUS
-                    {
-                        solverData->AddExpression($2);
-                    }
-                    | EXPRESSION_MINUS
-                    {
-                        solverData->AddExpression($1);
-                    }
-                    | ADD_OTHER_EXPRS EXPRESSION_PLUS
-                    {
-                        solverData->AddExpression($2);
-                    }
-                    | EXPRESSION_PLUS
-                    {
-                        solverData->AddExpression($1);
-                    }
-
-SUB_OTHER_EXPRS:
-                    SUB_OTHER_EXPRS EXPRESSION_MINUS
-                    {
-                        solverData->AddExpression($2 * SES_Variable(-1, 0));
-                    }
-                    | EXPRESSION_MINUS
-                    {
-                        solverData->AddExpression($1 * SES_Variable(-1, 0));
-                    }
-                    | SUB_OTHER_EXPRS EXPRESSION_PLUS
-                    {
-                        solverData->AddExpression($2 * SES_Variable(-1, 0));
-                    }
-                    | EXPRESSION_PLUS
-                    {
-                        solverData->AddExpression($1 * SES_Variable(-1, 0));
-                    }
-
-EXPRESSION_MINUS:
-                    SES_MINUS EXPRESSION
-                    {
-                        $$ = $2 * SES_Variable(-1, 0);
-                    }
-
-EXPRESSION_PLUS:
-                    SES_PLUS EXPRESSION
-                    {
-                        $$ = $2;
-                    }
+SIGN:
+                    SES_MINUS SIGN                                      { $$ = -1 * $2; }
+                    | SES_MINUS                                         { $$ = -1; }
+                    | SES_PLUS SIGN                                     { $$ = $2; }
+                    | SES_PLUS                                          { $$ = 1; }
 
 EXPRESSION:
-                    SES_X SES_DEGREE SES_INTEGER_NUMBER
-                    {
-                        $$ = SES_Variable(1, $3);
-                    }
-                    | SES_X
-                    {
-                        $$ = SES_Variable(1, 1);
-                    }
-                    | SES_NUMBER
-                    {
-                        $$ = SES_Variable($1, 0);
-                    }
-                    | SES_INTEGER_NUMBER
-                    {
-                        $$ = SES_Variable($1, 0);
-                    }
-                    | EXPRESSION SES_MULT EXPRESSION
-                    {
-                        $$ = $1 * $3;
-                    }
-                    | EXPRESSION SES_DIV EXPRESSION
-                    {
-                        $$ = $1 / $3;
-                    }
+                    SES_X SES_DEGREE SES_INTEGER_NUMBER                 { $$ = SES_Variable(1, $3); }
+                    | SES_X                                             { $$ = SES_Variable(1, 1); }
+                    | SES_NUMBER                                        { $$ = SES_Variable($1, 0); }
+                    | SES_INTEGER_NUMBER                                { $$ = SES_Variable($1, 0); }
+                    | EXPRESSION SES_MULT EXPRESSION                    { $$ = $1 * $3; }
+                    | EXPRESSION SES_DIV EXPRESSION                     { $$ = $1 / $3; }
 
 %%

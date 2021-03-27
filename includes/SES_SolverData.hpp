@@ -6,8 +6,10 @@
 class SES_SolverData {
 public:
 	void AddExpression(SES_Variable var);
+	void SubExpression(SES_Variable var);
 
-	std::vector<SES_Variable> GetVariables() const {return _variables;}
+	[[nodiscard]] std::vector<SES_Variable> GetVariables() const;
+	[[nodiscard]] std::string ToString() const;
 
 private:
 	std::vector<SES_Variable> _variables;
