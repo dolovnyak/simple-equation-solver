@@ -16,7 +16,8 @@ int main(int argc, char **argv)
 
 	try {
 		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(argv[1]);
-		std::cout << solverData << std::endl;
+		solverData->CheckCorrect();
+		std::cout << *solverData << std::endl;
 
 //		SES_Solver::Solve
 	}

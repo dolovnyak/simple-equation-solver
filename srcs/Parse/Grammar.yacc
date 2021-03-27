@@ -39,6 +39,7 @@ void yyerror(std::shared_ptr<SES_SolverData> solverData, const char *msg)
 %token              SES_X
 
 
+%type<Var>          EXPR_X
 %type<Var>          EXPRESSION
 %type<Var>          SIGNED_EXPRESSION
 %type<IntNumber>    SIGN
@@ -50,22 +51,36 @@ void yyerror(std::shared_ptr<SES_SolverData> solverData, const char *msg)
 
 LINE:
                     EQUATION
-                    | EQUATION SEPARATORS
-
-SEPARATORS:
-                    SES_SEPARATOR
-                    | SES_SEPARATOR SEPARATORS
 
 EQUATION:
-                    EXPRESSIONS_TO_BE_ADDED SES_EQUALLY EXPRESSIONS_TO_BE_SUB
+                    LEFT_EXPRESSIONS SES_EQUALLY RIGHT_EXPRESSIONS
+
+
+LEFT_EXPRESSIONS:
+                    FIRST_EXPR_TO_BE_ADDED EXPRESSIONS_TO_BE_ADDED
+                    | FIRST_EXPR_TO_BE_ADDED
+
+FIRST_EXPR_TO_BE_ADDED:
+                    SIGNED_EXPRESSION                                   { solverData->AddExpression($1); }
+                    | EXPRESSION                                        { solverData->AddExpression($1); }
 
 EXPRESSIONS_TO_BE_ADDED:
                     EXPRESSIONS_TO_BE_ADDED SIGNED_EXPRESSION           { solverData->AddExpression($2); }
                     | SIGNED_EXPRESSION                                 { solverData->AddExpression($1); }
 
+
+RIGHT_EXPRESSIONS:
+                    FIRST_EXPR_TO_BE_SUB EXPRESSIONS_TO_BE_SUB
+                    | FIRST_EXPR_TO_BE_SUB
+
+FIRST_EXPR_TO_BE_SUB:
+                    SIGNED_EXPRESSION                                   { solverData->SubExpression($1); }
+                    | EXPRESSION                                        { solverData->SubExpression($1); }
+
 EXPRESSIONS_TO_BE_SUB:
                     EXPRESSIONS_TO_BE_SUB SIGNED_EXPRESSION             { solverData->SubExpression($2); }
                     | SIGNED_EXPRESSION                                 { solverData->SubExpression($1); }
+
 
 SIGNED_EXPRESSION:
                     SIGN EXPRESSION                                     { $$ = SES_Variable($1, 0) * $2; }
@@ -77,11 +92,17 @@ SIGN:
                     | SES_PLUS                                          { $$ = 1; }
 
 EXPRESSION:
-                    SES_X SES_DEGREE SES_INTEGER_NUMBER                 { $$ = SES_Variable(1, $3); }
-                    | SES_X                                             { $$ = SES_Variable(1, 1); }
+                    SES_NUMBER EXPR_X                                   { $$ = SES_Variable($1, 0) * $2; }
+                    | SES_INTEGER_NUMBER EXPR_X                         { $$ = SES_Variable($1, 0) * $2; }
                     | SES_NUMBER                                        { $$ = SES_Variable($1, 0); }
                     | SES_INTEGER_NUMBER                                { $$ = SES_Variable($1, 0); }
+                    | EXPR_X                                            { $$ = $1; }
                     | EXPRESSION SES_MULT EXPRESSION                    { $$ = $1 * $3; }
                     | EXPRESSION SES_DIV EXPRESSION                     { $$ = $1 / $3; }
+
+EXPR_X:
+                    SES_X SES_DEGREE SIGN SES_INTEGER_NUMBER            { $$ = SES_Variable(1, $3 * $4); }
+                    | SES_X SES_DEGREE SES_INTEGER_NUMBER               { $$ = SES_Variable(1, $3); }
+                    | SES_X                                             { $$ = SES_Variable(1, 1); }
 
 %%

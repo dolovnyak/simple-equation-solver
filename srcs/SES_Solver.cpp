@@ -11,6 +11,5 @@ std::shared_ptr<SES_SolverData> SES_Solver::Parse(char *str) {
 	yyparse(equationSolverData);
 	fclose(file);
 
-	std::cout << *equationSolverData << std::endl;
 	return equationSolverData;
 }

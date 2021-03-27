@@ -25,6 +25,25 @@ std::vector<SES_Variable>::iterator SES_SolverData::GetVarByDegree(int degree) {
 	return std::find_if(_variables.begin(), _variables.end(), comparator);
 }
 
+std::vector<SES_Variable> SES_SolverData::GetVariables() const {
+	return _variables;
+}
+
+void SES_SolverData::CheckCorrect() const {
+	for (SES_Variable var : _variables) {
+		if (!var.IsCorrect())
+			throw NotCorrectDegreeException(var.ToString());
+	}
+}
+
+const char* SES_SolverData::NotCorrectDegreeException::what() const noexcept {
+	return exception_.c_str();
+}
+
+SES_SolverData::NotCorrectDegreeException::NotCorrectDegreeException(const std::string& stringVar) {
+	exception_ = "Degree is incorrect in expression: \"" + stringVar + "\"";
+}
+
 std::string SES_SolverData::ToString() const {
 	std::ostringstream oss;
 
@@ -41,11 +60,7 @@ std::string SES_SolverData::ToString() const {
 	return oss.str();
 }
 
-std::vector<SES_Variable> SES_SolverData::GetVariables() const {
-	return _variables;
-}
-
-std::ostream &operator<<(std::ostream &os, const SES_SolverData& solverData) {
+std::ostream& operator<<(std::ostream &os, const SES_SolverData& solverData) {
 	os << solverData.ToString();
 	return os;
 }

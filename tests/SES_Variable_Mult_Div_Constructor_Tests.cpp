@@ -24,22 +24,6 @@ TEST_F(SES_Variable_Mult_Div_Constructor_Tests, SES_Var_Constructor_Test) {
 		ASSERT_TRUE(false);
 	}
 
-	try {
-		SES_Variable var3(14, -1);
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"14 * X^-1\""));
-	}
-
-	try {
-		SES_Variable var4(14, 3);
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"14 * X^3\""));
-	}
-
 	try{
 	SES_Variable varMult1(2, 2);
 	varMult1 = varMult1 * SES_Variable(-2, 0);
@@ -57,23 +41,5 @@ TEST_F(SES_Variable_Mult_Div_Constructor_Tests, SES_Var_Constructor_Test) {
 	catch (const std::exception& exception) {
 		std::cout << exception.what() << std::endl;
 		ASSERT_TRUE(false);
-	}
-
-	try {
-		SES_Variable varMult(14, 2);
-		varMult = varMult * SES_Variable(42, 1);
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"14 * X^2 * 42 * X^1\""));
-	}
-
-	try {
-		SES_Variable varDiv(14, 1);
-		varDiv = varDiv / SES_Variable(42, 2);
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"14 * X^1 / 42 * X^2\""));
 	}
 }

@@ -20,8 +20,6 @@
 "-"                 {return SES_MINUS;}
 
 [\t\v\r\f ]+        {;}
-#[^\n]+[\n]         {return SES_SEPARATOR;}
-[\n]                {return SES_SEPARATOR;}
 .                   {throw std::runtime_error("LEX EXCEPTION: lexeme \"" + std::string(yytext) + "\" doesn't correct");}
 
 %%
