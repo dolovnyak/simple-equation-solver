@@ -7,13 +7,23 @@ bool is_input_correct(int argc) {
 }
 
 int main(int argc, char **argv) {
-	if (!is_input_correct(argc)) {
-		std::cout << "Only one string expected in argument." << std::endl;
+	char equation[2048];
+
+	if (argc == 2) {
+		strcpy(equation, argv[1]);
+	}
+	else if (argc == 1) {
+		std::string stringEquation;
+		std::getline(std::cin, stringEquation);
+		strcpy(equation, stringEquation.c_str());
+	}
+	else {
+		std::cout << "Arguments number is incorrect." << std::endl;
 		exit(0);
 	}
 
 	try {
-		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(argv[1]);
+		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(equation);
 		std::cout << "Reduced form: " << *solverData << std::endl;
 		std::cout << "Polynomial degree: " << solverData->GetMaxDegree() << std::endl;
 
