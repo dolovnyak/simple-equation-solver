@@ -1,15 +1,13 @@
 #include "SES_Solver.hpp"
 
-bool isInputCorrect(int argc)
-{
+bool is_input_correct(int argc) {
 	if (argc != 2)
 		return false;
 	return true;
 }
 
-int main(int argc, char **argv)
-{
-	if (!isInputCorrect(argc)) {
+int main(int argc, char **argv) {
+	if (!is_input_correct(argc)) {
 		std::cout << "Only one string expected in argument." << std::endl;
 		exit(0);
 	}

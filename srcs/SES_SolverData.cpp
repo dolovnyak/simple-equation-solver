@@ -67,6 +67,14 @@ int SES_SolverData::GetMaxDegree() const {
 	return maxDegree;
 }
 
+double SES_SolverData::GetCoefficientByDegree(int degree) const {
+	for (SES_Variable var : _variables) {
+		if (var.GetDegree() == degree)
+			return var.GetCoefficient();
+	}
+	return 0.0;
+}
+
 std::ostream& operator<<(std::ostream &os, const SES_SolverData& solverData) {
 	os << solverData.ToString();
 	return os;

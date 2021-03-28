@@ -4,7 +4,7 @@ std::string SES_Solution::ToString() const {
 	return _stringSolution;
 }
 
-SES_Solution::SES_Solution() : _stringSolution("The solution is:\n") {}
+SES_Solution::SES_Solution() : _stringSolution("") {}
 
 void SES_Solution::AddSolutionString(const std::string& solutionString) {
 	_stringSolution.append(solutionString);

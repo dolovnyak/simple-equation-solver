@@ -12,6 +12,7 @@ public:
 	[[nodiscard]] int GetMaxDegree() const;
 	[[nodiscard]] std::string ToString() const;
 	[[nodiscard]] bool IsDegreeCorrect() const;
+	[[nodiscard]] double GetCoefficientByDegree(int degree) const;
 
 private:
 	std::vector<SES_Variable> _variables;

@@ -2,8 +2,7 @@
 #include <utilities.hpp>
 #include "SES_Solver.hpp"
 
-class Common_Parse_Simplify_Tests : public ::testing::Test {
-};
+class Common_Parse_Simplify_Tests : public ::testing::Test {};
 
 TEST_F(Common_Parse_Simplify_Tests, All_Parameters_Reduced) {
 	std::shared_ptr<SES_SolverData> solverData;
@@ -51,42 +50,5 @@ TEST_F(Common_Parse_Simplify_Tests, Correct_Simplify) {
 	ASSERT_TRUE(solverData->GetVariables()[1].GetDegree() == 0);
 	ASSERT_TRUE(solverData->GetVariables()[2].GetCoefficient() == -24);
 	ASSERT_TRUE(solverData->GetVariables()[2].GetDegree() == 2);
-	bzero(equation, 100);
-}
-
-TEST_F(Common_Parse_Simplify_Tests, Not_Correct_Input) {
-	std::shared_ptr<SES_SolverData> solverData;
-
-	char equation[100] = "x^11 * X^10 = 2";
-	try {
-		solverData = SES_Solver::Parse(equation);
-		solverData->IsDegreeCorrect();
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"1 * X^21\""));
-	}
-	bzero(equation, 100);
-
-	strcpy(equation, "x^10 / X^11 = 2");
-	try {
-		solverData = SES_Solver::Parse(equation);
-		solverData->IsDegreeCorrect();
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"1 * X^-1\""));
-	}
-	bzero(equation, 100);
-
-	strcpy(equation, "x^-1 * x^3 *x = 2");
-	try {
-		solverData = SES_Solver::Parse(equation);
-		solverData->IsDegreeCorrect();
-		ASSERT_TRUE(false);
-	}
-	catch (const std::exception& exception) {
-		ASSERT_TRUE(contains(exception.what(), "Degree is incorrect in expression: \"1 * X^3\""));
-	}
 	bzero(equation, 100);
 }

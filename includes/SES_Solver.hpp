@@ -2,6 +2,7 @@
 
 #include "SES_SolverData.hpp"
 #include "SES_Solution.hpp"
+#include "utilities.hpp"
 
 class SES_Solver {
 public:
