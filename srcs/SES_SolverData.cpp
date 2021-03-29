@@ -46,7 +46,7 @@ std::string SES_SolverData::ToString() const {
 	else {
 		std::vector<SES_Variable> vars = this->GetVariables();
 		oss << vars[0].GetCoefficient() << " * X^" << vars[0].GetDegree();
-		for (int i = 1; i < vars.size(); i++)
+		for (size_t i = 1; i < vars.size(); i++)
 			oss << " " << vars[i];
 		oss << " = 0";
 	}
