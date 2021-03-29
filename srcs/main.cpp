@@ -1,21 +1,13 @@
 #include "SES_Solver.hpp"
 
-bool is_input_correct(int argc) {
-	if (argc != 2)
-		return false;
-	return true;
-}
-
 int main(int argc, char **argv) {
-	char equation[2048];
+	std::string stringEquation;
 
 	if (argc == 2) {
-		strcpy(equation, argv[1]);
+		stringEquation = argv[1];
 	}
 	else if (argc == 1) {
-		std::string stringEquation;
 		std::getline(std::cin, stringEquation);
-		strcpy(equation, stringEquation.c_str());
 	}
 	else {
 		std::cout << "Arguments number is incorrect." << std::endl;
@@ -23,7 +15,7 @@ int main(int argc, char **argv) {
 	}
 
 	try {
-		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(equation);
+		std::shared_ptr<SES_SolverData> solverData = SES_Solver::Parse(stringEquation.c_str());
 		std::cout << "Reduced form: " << *solverData << std::endl;
 		std::cout << "Polynomial degree: " << solverData->GetMaxDegree() << std::endl;
 

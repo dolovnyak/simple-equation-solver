@@ -40,3 +40,9 @@ double custom_sqrt(double number) {
 	}
 	return MY_NAN;
 }
+
+double n_zero_avoid(double number) {
+	if (is_equally(number, -0.0))
+		return 0.0;
+	return number;
+}

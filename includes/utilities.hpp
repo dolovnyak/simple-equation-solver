@@ -5,6 +5,7 @@
 
 bool contains(const std::string& orig, const std::string& income);
 double custom_sqrt(double number);
+double n_zero_avoid(double number);
 
 inline bool is_equally(double x, double y) {
 	return x - y >= -0.0000001 && x - y <= 0.0000001;
