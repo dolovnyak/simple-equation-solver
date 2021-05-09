@@ -1,4 +1,4 @@
 language: cpp
 compiler: clang
 os: osx
-script: cmake .; make;
+script: cmake .; make; ./GTests
