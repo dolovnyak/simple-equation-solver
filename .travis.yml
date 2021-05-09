@@ -1,5 +1,5 @@
 language: cpp
-compiler: clang
+compiler: gcc
 os: osx
 before_install:
   - pip install cpp-coveralls
