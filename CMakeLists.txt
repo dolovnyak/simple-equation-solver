@@ -14,6 +14,9 @@ set_target_properties(${PROJECT_NAME}
         )
 
 #tests
+if (FTEST_COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftest-coverage")
+endif()
 add_executable(GTests)
 add_subdirectory(libs/googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
