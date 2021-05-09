@@ -4,7 +4,7 @@ os: osx
 before_install:
   - pip install cpp-coveralls
 script:
-  - cmake -DFTEST_COVERAGE .
+  - cmake -DFTEST_COVERAGE=1 .
   - make
   - ./GTests
 after_success:
