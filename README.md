@@ -1,5 +1,9 @@
 # Simple polynomial equation solver.
 
+MacOS - [![Build Status](https://travis-ci.com/dolovnyak/simple-equation-solver.svg?branch=master)](https://travis-ci.com/dolovnyak/simple-equation-solver)
+###
+Test coverage: 57% lines covered, 44% branches covered
+
 This program simplifies and solves a polynomial second or lower degree equation.
 -------
 For example:
@@ -33,5 +37,3 @@ or
 ./simple-equation-solver
 write into standard input stream
 ```
-[![Build Status](https://travis-ci.org/dolovnyak/simple-equation-solver.png?branch=master)](https://travis-ci.org/dolovnyak/simple-equation-solver)
-Test coverage: 57% lines covered, 44% branches covered
