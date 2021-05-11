@@ -2,7 +2,7 @@
 
 ## MacOS - [![Build Status](https://travis-ci.com/dolovnyak/simple-equation-solver.svg?branch=master)](https://travis-ci.com/dolovnyak/simple-equation-solver) 
 ###
-Coverage - 57% lines covered, 44% branches covered
+[![Coverage Status](https://coveralls.io/repos/github/dolovnyak/simple-equation-solver/badge.svg?branch=master)](https://coveralls.io/github/dolovnyak/simple-equation-solver?branch=master)
 
 This program simplifies and solves a polynomial second or lower degree equation.
 -------
