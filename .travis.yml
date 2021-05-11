@@ -2,9 +2,9 @@ language: cpp
 compiler: gcc
 os: osx
 before_install:
-  - pip install cpp-coveralls
+  - pip install --user cpp-coveralls
 script:
-  - cmake -DCMAKE_CXX_FLAGS="-ftest-coverage" .
+  - cmake -DCMAKE_CXX_FLAGS="--coverage" .
   - make
   - ./GTests
 after_success:
