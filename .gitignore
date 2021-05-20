@@ -1,6 +1,7 @@
 *.idea
 *cmake-build-debug
 simple-equation-solver
+simple-equation-solver-tests
 *.dSYM
 generate_makefile
 package
