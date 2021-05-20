@@ -45,8 +45,9 @@ Build and run on `MacOS`:
 -------
 
 ```
-cmake .
-make
+git submodule update --init --recursive
+cmake -S . -B build
+make -C build
 
 ./simple-equation-solver "first argument input" 
 or
