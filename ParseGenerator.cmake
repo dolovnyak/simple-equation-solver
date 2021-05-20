@@ -5,7 +5,7 @@ set(YACC_CPP "Grammar.yy.cpp")
 set(YACC_HPP "Grammar.yy.hpp")
 set(YACC_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/includes")
 set(INCLUDE_FOR_YACC_HEADER "#include \"SES_SolverData.hpp\"")
-set(PARSE_DIR "${CMAKE_SOURCE_DIR}/srcs/Parse")
+set(PARSE_DIR "${CMAKE_SOURCE_DIR}/srcs/SolverLib/Parse")
 
 # generate lex/yacc parse when build
 add_custom_target(parser_generator ALL
