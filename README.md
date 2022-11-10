@@ -1,8 +1,6 @@
 # Simple polynomial equation solver.
 
-## MacOS - [![Build Status](https://travis-ci.com/dolovnyak/simple-equation-solver.svg?branch=master)](https://travis-ci.com/dolovnyak/simple-equation-solver) 
-###
-[![Coverage Status](https://coveralls.io/repos/github/dolovnyak/simple-equation-solver/badge.svg?branch=master)](https://coveralls.io/github/dolovnyak/simple-equation-solver?branch=master)
+## MacOS - ![Build](https://github.com/dolovnyak/simple-equation-solver/actions/workflows/build.yml/badge.svg?branch=master)
 
 This program simplifies and solves a polynomial second or lower degree equation.
 -------
